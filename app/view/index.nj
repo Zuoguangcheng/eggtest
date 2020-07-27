@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        用户名：<input type="text" id="name">
+    </div>
+
+    <div>
+        密码：<input type="text" id="pass" type="password">
+    </div>
+
+    <button id="submit">提交</button>
+
+    <button id="other">验证登录</button>
+
+
+    <button id="sessionIdInvalid">验证sessionId失效登录</button>
+</body>
+<script>
+    function getCookie(name) {
+        var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+        if (arr = document.cookie.match(reg))
+            return unescape(arr[2]);
+        else
+            return null;
+    }
+
+</script>
+<script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<script>
+    const name = document.querySelector('#name');
+    const pass = document.querySelector('#pass');
+
+    const submit = document.querySelector('#submit');
+    const other = document.querySelector('#other');
+    const sessionIdInvalid = document.querySelector('#sessionIdInvalid');
+
+    var csrftoken = getCookie('csrfToken');
+
+    submit.addEventListener('click', () => {
+        fetch('/login', {
+            method: 'POST',
+            headers: {
+                "Content-type": 'application/json',
+                "x-csrf-token": csrftoken
+            },
+
+            body: JSON.stringify({
+                userName: name.value,
+                password: md5(pass.value),
+            })
+        }).then(res => {
+            console.log('res', res.json());
+        })
+    });
+
+    other.addEventListener('click', () => {
+        fetch('/others', {
+            method: 'get',
+            headers: {
+                "x-csrf-token": csrftoken
+            },
+        }).then(res => {
+            console.log('res-others', res.json());
+        })
+    })
+
+    sessionIdInvalid.addEventListener('click', () => {
+        fetch('/invalid', {
+            method: 'get',
+            headers: {
+                "x-csrf-token": csrftoken
+            },
+        }).then(res => {
+            console.log('res-others', res.json());
+        })
+    })
+
+</script>
+
+</html>

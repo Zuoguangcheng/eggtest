@@ -5,4 +5,9 @@ export default class HomeController extends Controller {
     const { ctx } = this;
     ctx.body = await ctx.service.test.sayHi('egg1');
   }
+
+  public async home() {
+    const { ctx } = this;
+    await ctx.render('index');
+  }
 }
