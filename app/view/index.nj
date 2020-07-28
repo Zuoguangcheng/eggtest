@@ -22,6 +22,13 @@
 
 
     <button id="sessionIdInvalid">验证sessionId失效登录</button>
+
+
+    <div>
+        <button id="tokenLogin">使用token登录</button>
+        <button id="verificationLogin">验证token登录</button>
+    </div>
+
 </body>
 <script>
     function getCookie(name) {
@@ -41,6 +48,9 @@
     const submit = document.querySelector('#submit');
     const other = document.querySelector('#other');
     const sessionIdInvalid = document.querySelector('#sessionIdInvalid');
+
+    const tokenLogin = document.querySelector('#tokenLogin');
+    const verificationLogin = document.querySelector('#verificationLogin');
 
     var csrftoken = getCookie('csrfToken');
 
@@ -83,6 +93,34 @@
         })
     })
 
+
+
+    tokenLogin.addEventListener('click', () => {
+        fetch('/tokenLogin', {
+            method: 'POST',
+            headers: {
+                "x-csrf-token": csrftoken,
+                "Content-type": 'application/json',
+            },
+            body: JSON.stringify({
+                userName: name.value,
+                password: md5(pass.value),
+            })
+        }).then(res => {
+            console.log('res-others', res.json());
+        })
+    })
+
+    verificationLogin.addEventListener('click', () => {
+        fetch('/verificationLogin', {
+            method: 'get',
+            headers: {
+                "x-csrf-token": csrftoken
+            },
+        }).then(res => {
+            console.log('res-others', res.json());
+        })
+    })
 </script>
 
 </html>

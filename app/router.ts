@@ -9,4 +9,8 @@ export default (app: Application) => {
   router.get('/others', controller.user.others);
   router.get('/invalid', controller.user.invalid);
 
+  // token登录方式
+
+  router.post('/tokenLogin', controller.user.tokenLogin);
+  router.get('/verificationLogin', controller.user.verificationLogin);
 };

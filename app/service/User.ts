@@ -80,4 +80,38 @@ export default class Users extends Service {
     }
 
   }
+
+
+  /**
+   * 演示token登录方式
+   *
+  */
+  public async tokenLogin() {
+    const { ctx } = this;
+
+    const { userName, password } = ctx.request.body;
+    const userInfo = await this.app.mysql.get('user', { name: userName });
+    if (userInfo && (password === userInfo.password)) {
+      const token = JSON.stringify(userInfo);
+
+      ctx.cookies.set('token', token, {
+        maxAge: 100000,
+        encrypt: true,
+      });
+    }
+
+    return {
+      code: 0,
+    };
+  }
+
+  public async verificationLogin() {
+    const { ctx } = this;
+    const token = ctx.cookies.get('token', {
+      encrypt: true,
+    });
+
+    return token;
+
+  }
 }
