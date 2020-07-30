@@ -7,6 +7,11 @@ const plugin: EggPlugin = {
     package: 'egg-view-nunjucks',
   },
 
+  // decoratorRouter: {
+  //   enable: true,
+  //   package: 'egg-decorator-router',
+  // },
+
   mysql: {
     enable: true,
     package: 'egg-mysql',
